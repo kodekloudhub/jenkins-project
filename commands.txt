@@ -1,0 +1,13 @@
+python -m virtualenv kodekloud
+.\kodekloud\Scripts\activate kodekloud
+
+pip install -r requirements.txt
+python app.py
+pytest
+
+docker build -t kodekloud_flask_app .
+docker tag kodekloud_flask_app psrv3/kodekloud_flask_app
+docker push psrv3/kodekloud_flask_app
+
+kubectl create -f *.yaml
+
