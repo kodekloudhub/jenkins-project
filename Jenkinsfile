@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/kodekloudhub/jenkins-project'
+                git 'https://github.com/kodekloudhub/jenkins-project.git'
                 sh "ls -ltr"
             }
         }
