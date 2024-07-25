@@ -22,12 +22,13 @@ pipeline {
         stage('Test') {
             steps {
                 sh "pytest"
+                sh "whoami"
             }
         }
         stage('Login to docker hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-                sh 'docker login -u sanjeevkt720 -p ${dockerhubpwd}'}
+                sh 'echo ${dockerhubpwd} | docker login -u sanjeevkt720 --password-stdin'}
                 echo 'Login successfully'
             }
         }
