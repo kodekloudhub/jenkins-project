@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-app-deployment-stag
-  namespace: staging
+  name: flask-app-deployment-prod
+  namespace: prod
   labels:
     app: flask-app
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: psrv3/kodekloud_flask_app
+        image: sanjeevkt720/jenkins-flask-app
         ports:
         - containerPort: 5000
         resources:
