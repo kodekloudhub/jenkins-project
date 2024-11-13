@@ -5,7 +5,7 @@ KodeKloud is an interactive platform that provides hands-on experience with tech
 ## Important Notes:
 - **Kubernetes Version**: 1.31
 - **Availability Zone**: Do **not** select subnets from `us-east-1e` as it is restricted.
-- **Terraform Option**: For automation using Terraform, refer to [this guide](https://github.com/kodekloudhub/certified-kubernetes-administrator-course/tree/master/managed-clusters/eks) by @Alistair_KodeKloud.
+- **Terraform Method**: For automation using Terraform, refer to [this guide](https://github.com/kodekloudhub/certified-kubernetes-administrator-course/tree/master/managed-clusters/eks) by @Alistair_KodeKloud.
 
 ## Prerequisites:
 - Basic understanding of AWS and Kubernetes.
@@ -24,7 +24,7 @@ Follow these steps or refer to the [AWS EKS Documentation](https://docs.aws.amaz
 - Open the [IAM Console](https://console.aws.amazon.com/iam/), go to **Roles**, and click **Create role**.
 - Choose **AWS service** as the trusted entity type and select **EKS** → **EKS - Cluster**.
   ![IAM Role Creation](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389488/qdjzivrguhxmlpvomptv.png)
-- Click **Next**, skip adding permissions, name the role **eksClusterRole**, and click **Create role**.
+- Click **Next**, skip adding permissions, name the role **eksClusterRole**, and click **Create role**. (Note: ensure this exact name is used, as a different name will cause the cluster creation to fail)
   ![Assign Role Name](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389542/d0vb1cglwangn9lusr5f.png)
 
 ### 2. Create the EKS Cluster
@@ -85,7 +85,7 @@ To make it simple, you can follow the steps below. For more information, refer t
    ![Template URL](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390176/azqnrdckq9rrtqcnx55z.png)
 
 3. **Specify Stack Details**:
-   - **Stack name**: Enter `eks-cluster-stack`.
+   - **Stack name**: Enter `eks-cluster-stack`.(Note: ensure this exact name is used, as a different name will cause the cluster creation to fail)
    - **ClusterName**: Enter `demo-eks` (same name as your EKS cluster).
    - **ClusterControlPlaneSecurityGroup**: Select the security group of the cluster control plane.
    - **NodeGroupName**: Enter `eks-demo-node`.
