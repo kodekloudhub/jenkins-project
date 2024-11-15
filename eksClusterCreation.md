@@ -1,101 +1,138 @@
-# How to Create an EKS Cluster in KodeKloud Labs
+# Creating an EKS Cluster in KodeKloud Labs
 
-KodeKloud is an interactive learning platform that offers hands-on experience with various technologies, including Kubernetes and EKS. It provides a safe and sandboxed environment for experimentation, practice, and mastery of skills without the concerns of managing underlying infrastructure. EKS is widely adopted across organizations, making it a valuable practice environment for industry-standard Kubernetes skills. This guide will walk you through creating an EKS cluster in KodeKloud Lab.
+KodeKloud is an interactive platform that provides hands-on experience with technologies like Kubernetes and EKS, offering a safe environment for practice without managing infrastructure. This guide will help you create an EKS cluster in KodeKloud Labs.
 
-## Note:
-- **Kubernetes version**: 1.29
-- **Availability Zone**: For us-east-1e, users cannot make changes or use it. Therefore, we will not select the subnet from the us-east-1e availability zone.
-- **Terraform Guide**: For an automated approach using Terraform, follow the guide by @Alistair_KodeKloud. [Here](https://github.com/kodekloudhub/certified-kubernetes-administrator-course/tree/master/managed-clusters/eks)
+## Important Notes:
+- **Kubernetes Version**: 1.31
+- **Availability Zone**: Do **not** select subnets from `us-east-1e` as it is restricted.
+- **Terraform Method**: For automation using Terraform, refer to [this guide](https://github.com/kodekloudhub/certified-kubernetes-administrator-course/tree/master/managed-clusters/eks) by @Alistair_KodeKloud.
 
 ## Prerequisites:
-- Basic knowledge of AWS and Kubernetes.
+- Basic understanding of AWS and Kubernetes.
 
-## Step 1: Provision AWS Cloud Lab
-- Click **START LAB** to request a new AWS Cloud instance; after a few seconds, you will receive your credentials to access the AWS Cloud console.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389164/qnmfarvvje6f9ab24zfz.png)
-- Access to Console link and using provided credentials.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389234/ywggrnull0swswqgvpzc.png)
+## Step 1: Provision the AWS Cloud Lab
+1. Click **START LAB** to initiate an AWS Cloud instance.
+2. After a few seconds, you will receive credentials to access the AWS console.
+   ![AWS Lab Start](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389164/qnmfarvvje6f9ab24zfz.png)
+3. Log in using the provided credentials.
+   ![Login Credentials](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389234/ywggrnull0swswqgvpzc.png)
 
-## Step 2: Creating cluster EKS
+## Step 2: Create the EKS Cluster
+Follow these steps or refer to the [AWS EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html) for more details.
 
-To make it simple, you can follow the steps below. For more information please refer to [AWS EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html).
+### 1. Create a Cluster Service Role
+- Open the [IAM Console](https://console.aws.amazon.com/iam/), go to **Roles**, and click **Create role**.
+- Choose **AWS service** as the trusted entity type and select **EKS** → **EKS - Cluster**.
+  ![IAM Role Creation](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389488/qdjzivrguhxmlpvomptv.png)
+- Click **Next**, skip adding permissions, name the role **eksClusterRole**, and click **Create role**. (Note: ensure this exact name is used, as a different name will cause the cluster creation to fail)
+  ![Assign Role Name](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389542/d0vb1cglwangn9lusr5f.png)
 
-1. Before creating an Amazon EKS cluster, you need to create the Cluster service role. To create a new IAM role for EKS in AWS, start by opening the IAM console at [IAM Console](https://console.aws.amazon.com/iam/). Then, click on 'Roles' and select 'Create role'. Under 'Trusted entity type', choose 'AWS service'. In the 'Use cases for other AWS services' dropdown, select 'EKS' and then pick 'EKS - Cluster'.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389488/qdjzivrguhxmlpvomptv.png)
-   Click ‘Next’ and proceed without adding any additional permissions in the ‘Add permissions’ tab. Next, assign **eksClusterRole** to your role. Finally, click on ‘Create role’ to complete the process.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389542/d0vb1cglwangn9lusr5f.png)
-2. Open the Amazon EKS console at [EKS Console](https://console.aws.amazon.com/eks/home#/clusters) Choose Create cluster.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389755/yvspivykxbom8atrwgto.png)
-3. On the Configure cluster page, Enter **demo-eks** as the name for your cluster, and choose the Kubernetes 1.29 version. You can also select other options as per your requirements.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389803/qvmcgexaprki14alxlhe.png)
-4. On the Specify networking page, select values for the Subnets fields - You must select at least two values (Do not select the subnet from the us-east-1e availability zone). In this tutorial, subnets from **us-east-1a, us-east-1b, us-east-1c** availability zones are selected. Choose an existing security group or create a new one. Ensure that the security group allows inbound and outbound traffic on the required ports for your applications. Choose Next..
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389834/p2zljgzyaclkop25r744.png)
-5. On the Configure logging and Select add-ons page, you can optionally choose which you want and then select Next.
+### 2. Create the EKS Cluster
+- Go to the [EKS Console](https://console.aws.amazon.com/eks/home#/clusters) and click **Create cluster**.
+  ![Create Cluster](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389755/yvspivykxbom8atrwgto.png)
 
-6. On the Review and Create page, review the information that you entered or selected on the previous pages. If you need to make changes, choose Edit. After that, choose Create. The Status field shows CREATING while the cluster is provisioned.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389943/mkoqybyb1s9rvb2iww9a.png)
-7. Once the cluster is created, enable kubectl to communicate with your cluster by adding a new context to the kubectl config file by executing the following command in Terminal.
+### 3. Configure the Cluster
+- Enter **demo-eks** as the name for your cluster.
+- Select **eksClusterRole** as the IAM role.
+- Choose **Kubernetes 1.31** as the version.
+- Set **EKS API and ConfigMap** as the cluster authentication mode.
+  ![Cluster Configuration](https://res.cloudinary.com/kodekloud/image/upload/v1731325608/kafka-lbd-course-images/Screenshot_2024-11-11_171623.png)
+
+### 4. Specify Networking
+- Select at least two subnets (avoid `us-east-1e`).
+- Choose subnets from `us-east-1a`, `us-east-1b`, and `us-east-1c`.
+- Ensure your security group allows necessary traffic.
+  ![Networking Configuration](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389834/p2zljgzyaclkop25r744.png)
+
+### 5. Configure Observability and Add-ons
+- Select the default options in **Configure observability**.
+- Select add-ons and **Configure selected add-ons settings**, then click **Next**.
+
+### 6. Review and Create
+- Review your settings and click **Create**. The cluster status will show as **CREATING** during provisioning.
+  ![Cluster Creation](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389943/mkoqybyb1s9rvb2iww9a.png)
+
+### 7. Configure `kubectl`
+- Enable `kubectl` to interact with your cluster by updating the `kubeconfig`:
    ```bash
-   $ aws eks update-kubeconfig --name <cluster-name>
+   aws eks update-kubeconfig --name <cluster-name>
    ```
-   ![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390063/xmfnqqxr1jbffwg2n9cj.png)
-## Step 3: Computing self-managed nodes
+   ![Update kubeconfig](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390063/xmfnqqxr1jbffwg2n9cj.png)
 
-To make it simple, you can follow the steps below. For more information please refer to [AWS EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html)
+---
 
-**Note:** If you don’t provide a key pair here, the AWS CloudFormation stack creation fails. Therefore please ensure that you have at least a key pair before moving forward. You can create one in the AWS Management Console. To create a key pair, see [AWS EC2 Documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html#having-ec2-create-your-key-pair)
+## Step 3: Computing Self-Managed Nodes
 
-1. Open the AWS CloudFormation console at [CloudFormation Console](https://console.aws.amazon.com/cloudformation). Choose Create stack and then select With new resources (standard).
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390143/xghwm2z0oqopyhdpczfv.png)
-2. Use the template ready option. Select the Amazon S3 Url as the template source and add the following file location URL in the Amazon S3 Url. Choose Next.
-   https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2022-12-23/amazon-eks-nodegroup.yaml
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390176/azqnrdckq9rrtqcnx55z.png)
-3. On the Specify stack details page, enter the following parameters accordingly, and then choose Next:
+To make it simple, you can follow the steps below. For more information, refer to [AWS EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html).
 
-   - Stack name: Enter **eks-cluster-stack** for your AWS CloudFormation stack.
+**Note:** If you don’t provide a key pair here, the AWS CloudFormation stack creation fails. Ensure you have at least one key pair before moving forward. To create a key pair, see [AWS EC2 Documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html#having-ec2-create-your-key-pair).
 
-   - ClusterName: Enter **demo-eks** as name that you used when you created your Amazon EKS cluster. This name must be the same as the cluster name or your nodes can’t join the cluster.
+### Steps:
 
-   - ClusterControlPlaneSecurityGroup: Choose the security group of the cluster control plane.
+1. **Open the AWS CloudFormation Console**:
+   - Go to the [CloudFormation Console](https://console.aws.amazon.com/cloudformation).
+   - Choose **Create stack** and select **With new resources (standard)**.
+   ![Create Stack](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390143/xghwm2z0oqopyhdpczfv.png)
 
-   - NodeGroupName: Enter **eks-demo-node** for your node group.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390327/gnodiuipvzkpqzouevex.png)
-   - NodeImageIdSSMParam: Pre-populated with the Amazon EC2 Systems Manager parameter of a recent Amazon EKS optimized AMI for a variable Kubernetes version. If you want to use version 1.29, you can update the field to /aws/service/eks/optimized-ami/1.29/amazon-linux-2/recommended/image_id
+2. **Select the Template**:
+   - Use the **Choose an existing template** option.
+   - Choose **Amazon S3 URL** as the template source.
+   - Enter the following URL in the **Amazon S3 URL** field:
+     ```
+     https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2022-12-23/amazon-eks-nodegroup.yaml
+     ```
+   - Click **Next**.
+   ![Template URL](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390176/azqnrdckq9rrtqcnx55z.png)
+
+3. **Specify Stack Details**:
+   - **Stack name**: Enter `eks-cluster-stack`.(Note: ensure this exact name is used, as a different name will cause the cluster creation to fail)
+   - **ClusterName**: Enter `demo-eks` (same name as your EKS cluster).
+   - **ClusterControlPlaneSecurityGroup**: Select the security group of the cluster control plane.
+   - **NodeGroupName**: Enter `eks-demo-node`.
+   ![Stack Details](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390327/gnodiuipvzkpqzouevex.png)
+   - **NodeImageIdSSMParam**: Pre-populated with the Amazon EC2 Systems Manager parameter. To use version 1.31, update it to:
+     ```
+     /aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id
+     ```
+   - **Subnets**: Select the same subnets as the EKS cluster.
+   - **Instance Type**: Choose from `.nano`, `.micro`, `.small`, or `.medium` of `t1`, `t2`, or `t3` instance classes.
+   - **Disk Type**: Choose `gp2`.
+   - **Disk Size**: Maximum allowed is 10GB.
+   ![Instance Configuration](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390378/qyztzkqpqvocpsygpdhr.png)
+   - **KeyName**: Select an Amazon EC2 SSH key pair to enable SSH access to the nodes.
+   - **VpcId**: Select the same VPC as the EKS cluster.
+   ![VPC Selection](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390498/czwwukryhhldloe9ft5u.png)
+
+4. **Configure Stack Options**:
+   - Select the default options on the **Configure stack options** page.
+   - Check the box for **“I acknowledge that AWS CloudFormation might create IAM resources”** at the bottom of this page.
+   - Click **Next**.
+![IAM Acknowledgement](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390534/y4kkpyqi8xpf6wzg3mny.png)
+
+5. **Review and create**:
+   - Click **Submit** in the Review and create page.
    
-   -  Subnets: Select the subnets as same as EKS cluster
 
-   - Choose one of these instance types: .nano, micro, .small, .medium of t1,t2, and t3 instance class.
+6. **Review Stack Creation**:
+   - When the stack creation completes, select the stack in the console.
+   - Go to **Outputs** and record the `NodeInstanceRole` for the node group. This role is needed to configure your Amazon EKS nodes.
+   ![NodeInstanceRole](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390570/y5p56imorc7rh5pn0usa.png)
 
-   - Choose the disk type as “gp2” only.
+## Step 4: Joining the Worker Nodes
 
-   - The maximum disk size per node allowed is 10GB.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390378/qyztzkqpqvocpsygpdhr.png)
-   - KeyName: Select the name of an Amazon EC2 SSH key pair that you can use to connect using SSH into your nodes after they launch.
+Execute the following commands in the lab terminal to join the worker nodes to your EKS cluster.
 
-   - VpcId: Select the VPC as same as EKS cluster
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390498/czwwukryhhldloe9ft5u.png)
-
-4. Select your desired choices on the Configure stack options page, and then choose Next
-
-5. As on the box below, stick “I acknowledge that AWS CloudFormation might create IAM resources”, and then choose Submit.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390534/y4kkpyqi8xpf6wzg3mny.png)
-6. When your stack has finished creating, select it in the console and choose Outputs. Record the NodeInstanceRole for the node group that was created. You need this when you configure your Amazon EKS nodes.
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390570/y5p56imorc7rh5pn0usa.png)
-
-## Step 4: Joining the worker nodes
-
-Execute the following commands in the terminal.
-
-First, you need to download the configuration map by executing the following command. Then, in the aws-auth-cm.yaml file, update the value of rolearn key to NodeInstanceRole value which is created above.
-
-```
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/aws-auth-cm.yaml
-```
-![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390657/paszwq3ge2f8phkzzpiy.png)
-
-Next, apply the configuration. This command may take a few minutes to finish.
-```bash
-kubectl apply -f aws-auth-cm.yaml
-```
+### 1. Download the Configuration Map
+- Run the following command to download the `aws-auth-cm.yaml` file:
+  ```bash
+  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/aws-auth-cm.yaml
+  ```
+- Open the `aws-auth-cm.yaml` file and update the value of the `rolearn` key with the `NodeInstanceRole` value recorded from the previous step.![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390657/paszwq3ge2f8phkzzpiy.png)
+### 2. Apply the Configuration
+- Apply the updated configuration map using the command below. Note that it may take a few minutes to complete:
+  ```bash
+  kubectl apply -f aws-auth-cm.yaml
+  ```
 ![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390731/cs5oxd2pvg3yaehqsj7h.png)
-By successfully creating an EKS cluster in KodeKloud Playground, you not only gain valuable experience but also build confidence in working with real-world Kubernetes environments. So, start creating your EKS cluster today and practice your Kubernetes skills. With each step, you’ll build confidence, expand your knowledge, and strengthen your skills in EKS and Kubernetes.
+By successfully creating an EKS cluster in KodeKloud Playground, you gain valuable experience and build confidence in working with real-world Kubernetes environments. Start creating your EKS cluster today and practice your Kubernetes skills. With each step, you’ll enhance your knowledge, build confidence, and strengthen your expertise in EKS and Kubernetes.
+
