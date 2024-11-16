@@ -24,6 +24,15 @@ pipeline
 			}
 		}
 
+	    		stage('Build Docker Image') 
+        {
+			steps {
+				sh 'docker build -t ${IMAGE_TAG} .'
+				echo "Docker image build successfully"
+				sh 'docker images ls'
+			}
+		}
+
 		stage('Login to Dockerhub') 
         {
 			steps {
@@ -33,15 +42,6 @@ pipeline
 				echo 'login successful'
 				}
 
-			}
-		}
-
-		stage('Build Docker Image') 
-        {
-			steps {
-				sh 'docker build -t ${IMAGE_TAG} .'
-				echo "Docker image build successfully"
-				sh 'docker images ls'
 			}
 		}
 
