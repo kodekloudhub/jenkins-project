@@ -9,9 +9,6 @@ pipeline
     
 	stages 
     {
-
-	 # runs on any branch other than main or any PR created
-
     	        stage('PR'){
     	           when {
     		     changeRequest target: 'main'
