@@ -32,34 +32,34 @@ pipeline
 			}
 		}
 
-	    		stage('Build Docker Image') 
-        {
-			steps {
-				sh 'docker build -t ${IMAGE_TAG} .'
-				echo "Docker image build successfully"
-				sh 'docker images ls'
-			}
-		}
+	 //    		stage('Build Docker Image') 
+  //       {
+		// 	steps {
+		// 		sh 'docker build -t ${IMAGE_TAG} .'
+		// 		echo "Docker image build successfully"
+		// 		sh 'docker images ls'
+		// 	}
+		// }
 
-		stage('Login to Dockerhub') 
-        {
-			steps {
-				withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+		// stage('Login to Dockerhub') 
+  //       {
+		// 	steps {
+		// 		withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 
-				sh 'echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin' 
-				echo 'login successful'
-				}
+		// 		sh 'echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin' 
+		// 		echo 'login successful'
+		// 		}
 
-			}
-		}
+		// 	}
+		// }
 
-		stage('Push Docker image') 
-        {
-			steps {
-				sh "docker push ${IMAGE_TAG}"
-				echo "Docker image pushed successfully."
-			}
-		}
+		// stage('Push Docker image') 
+  //       {
+		// 	steps {
+		// 		sh "docker push ${IMAGE_TAG}"
+		// 		echo "Docker image pushed successfully."
+		// 	}
+		// }
 
 	}
 
