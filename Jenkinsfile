@@ -12,7 +12,7 @@ pipeline
 
 	 # runs on any branch other than main or any PR created
 
-    	         stage('PR'){
+    	        stage('PR'){
     	           when {
     		     changeRequest target: 'main'
     	           }
