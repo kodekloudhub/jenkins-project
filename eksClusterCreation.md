@@ -32,17 +32,19 @@ Follow these steps or refer to the [AWS EKS Documentation](https://docs.aws.amaz
   ![Create Cluster](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389755/yvspivykxbom8atrwgto.png)
 
 ### 3. Configure the Cluster
-- Enter **demo-eks** as the name for your cluster.
-- Select **eksClusterRole** as the IAM role.
-- Choose **Kubernetes 1.31** as the version.
-- Set **EKS API and ConfigMap** as the cluster authentication mode.
-  ![Cluster Configuration](https://res.cloudinary.com/kodekloud/image/upload/v1731325608/kafka-lbd-course-images/Screenshot_2024-11-11_171623.png)
+- Select **Custom configuration** to enable advanced customization options.
+- Under **EKS Auto Mode**, select **Disabled** to manually configure compute, storage, and networking resources.
+- Enter **demo-eks** as the cluster name.
+- Select **eksClusterRole** as the Cluster IAM role.
+- Choose **Kubernetes version 1.31**.
+- Select **EKS API and ConfigMap** to allow IAM authentication for the API server and ConfigMaps.
+  ![Cluster Configuration](https://res.cloudinary.com/kodekloud/image/upload/v1734092187/kafka-lbd-course-images/Screenshot_2024-12-13_174606.png)
 
 ### 4. Specify Networking
 - Select at least two subnets (avoid `us-east-1e`).
 - Choose subnets from `us-east-1a`, `us-east-1b`, and `us-east-1c`.
 - Ensure your security group allows necessary traffic.
-  ![Networking Configuration](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389834/p2zljgzyaclkop25r744.png)
+  ![Networking Configuration](https://res.cloudinary.com/kodekloud/image/upload/v1734092511/kafka-lbd-course-images/Screenshot_2024-12-13_175134.png)
 
 ### 5. Configure Observability and Add-ons
 - Select the default options in **Configure observability**.
@@ -50,8 +52,8 @@ Follow these steps or refer to the [AWS EKS Documentation](https://docs.aws.amaz
 
 ### 6. Review and Create
 - Review your settings and click **Create**. The cluster status will show as **CREATING** during provisioning.
-  ![Cluster Creation](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714389943/mkoqybyb1s9rvb2iww9a.png)
-
+  ![Cluster Creation](https://res.cloudinary.com/kodekloud/image/upload/v1734092736/kafka-lbd-course-images/Screenshot_2024-12-13_175517.png)
+  
 ### 7. Configure `kubectl`
 - Enable `kubectl` to interact with your cluster by updating the `kubeconfig`:
    ```bash
@@ -135,4 +137,3 @@ Execute the following commands in the lab terminal to join the worker nodes to y
   ```
 ![](https://res.cloudinary.com/dljvrtsnk/image/upload/v1714390731/cs5oxd2pvg3yaehqsj7h.png)
 By successfully creating an EKS cluster in KodeKloud Playground, you gain valuable experience and build confidence in working with real-world Kubernetes environments. Start creating your EKS cluster today and practice your Kubernetes skills. With each step, you’ll enhance your knowledge, build confidence, and strengthen your expertise in EKS and Kubernetes.
-
